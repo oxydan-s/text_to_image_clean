@@ -78,7 +78,8 @@ def text_to_image_visualizer(input_text: str, encoding: str, output_filename: st
             draw.line([(cell_x, cell_y), (cell_x + cell_size, cell_y)], fill='white', width=2)
 
     # 6. Зберігаємо зображення у теці text_to_image
-    output_path = os.path.join('text_to_image', output_filename)
+    output_path = os.path.join('/Users/dan/Documents/Project/Sage/App_MY_ipnb/text_to_image', output_filename)
+    print(f"Saving image to: {output_path}")
     img.save(output_path)
     print(f"Зображення успішно створено та збережено у файлі '{output_path}'")
 
@@ -88,7 +89,7 @@ def image_to_text_reader(input_filename: str, encoding: str, cell_size: int = 20
     """
     try:
         # Формуємо шлях до зображення у теці text_to_image
-        input_path = os.path.join('text_to_image', input_filename)
+        input_path = os.path.join('/Users/dan/Documents/Project/Sage/App_MY_ipnb/text_to_image', input_filename)
         img = Image.open(input_path).convert('RGB')
     except FileNotFoundError:
         print(f"Помилка: Файл '{input_filename}' не знайдено у теці 'text_to_image'.")
@@ -200,12 +201,21 @@ if __name__ == '__main__':
                 print("Оригінал:", original_text)
                 print("Відновлений:", restored_text)
 
+        # Виведення 16-річного коду оригінального тексту
+        original_hex = original_text.encode(encoding).hex()
+        print("16-річний код оригінального тексту:", original_hex)
+
+        # Виведення 16-річного коду відновленого тексту
+        if restored_text:
+            restored_hex = restored_text.encode(encoding, errors='ignore').hex()
+            print("16-річний код відновленого тексту: ", restored_hex)
+
         # Перевірка кількості клітинок
         expected_cells = len(original_text.encode(encoding)) * 2  # 2 клітинки на байт
         print(f"Очікувана кількість клітинок: {expected_cells}")
 
         from PIL import Image
-        img = Image.open(f'text_to_image/{filename_to_read}')
+        img = Image.open(f'/Users/dan/Documents/Project/Sage/App_MY_ipnb/text_to_image/{filename_to_read}')
         width, height = img.size
         actual_cells = (width // 20) * (height // 20)  # 20 - розмір клітинки
         print(f"Фактична кількість клітинок: {actual_cells}")
